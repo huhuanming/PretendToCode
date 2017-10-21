@@ -7,9 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <ObjectiveGit/ObjectiveGit.h>
+#import <Security/Security.h>
 
 @interface ViewController : UIViewController
 
+@property (weak, nonatomic) IBOutlet UITextField *nameTextFiled;
+
+@property (weak, nonatomic) IBOutlet UITextField *passwordTextFiled;
 
 @end
 
