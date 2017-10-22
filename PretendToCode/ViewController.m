@@ -32,6 +32,12 @@
     }
 }
 
+- (IBAction)onUrlEditingEnd:(id)sender {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.nameTextFiled becomeFirstResponder];
+    });
+}
+
 - (IBAction)onNameEditingEnd:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.passwordTextFiled becomeFirstResponder];
@@ -43,7 +49,7 @@
     NSString *accountPassword = self.passwordTextFiled.text;
     [self saveToKeyChain];
     
-    NSString* url = @"https://github.com/huhuanming/PretendToCode";
+    NSString* url = self.urlTextField.text;
     GTRepository* repo = nil;
     NSError* error = nil;
     NSFileManager* fileManager = [NSFileManager defaultManager];
@@ -155,6 +161,9 @@
         @try {
             ret = [NSKeyedUnarchiver unarchiveObjectWithData:(__bridge NSData *)keyData];
             if(ret) {
+                if(ret[@"repo"]) {
+                    [self.urlTextField setText:ret[@"repo"]];
+                }
                 if(ret[@"account"]) {
                     [self.nameTextFiled setText:ret[@"account"]];
                 }
@@ -180,7 +189,7 @@
                                           (id)kSecAttrAccessibleAfterFirstUnlock,(id)kSecAttrAccessible,
                                           nil];
     SecItemDelete((CFDictionaryRef)keychainQuery);
-    [keychainQuery setObject:[NSKeyedArchiver archivedDataWithRootObject:@{@"account": self.nameTextFiled.text, @"password": self.passwordTextFiled.text}] forKey:(id)kSecValueData];
+    [keychainQuery setObject:[NSKeyedArchiver archivedDataWithRootObject:@{@"repo": self.urlTextField.text, @"account": self.nameTextFiled.text, @"password": self.passwordTextFiled.text}] forKey:(id)kSecValueData];
     SecItemAdd((CFDictionaryRef)keychainQuery, NULL);
 }
 

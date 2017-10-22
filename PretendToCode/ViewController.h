@@ -12,6 +12,8 @@
 
 @interface ViewController : UIViewController
 
+@property (weak, nonatomic) IBOutlet UITextField *urlTextField;
+
 @property (weak, nonatomic) IBOutlet UITextField *nameTextFiled;
 
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextFiled;
